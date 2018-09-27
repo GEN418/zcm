@@ -559,6 +559,7 @@ int zcm_blocking_t::setQueueSize(uint32_t numMsgs, bool block)
 
 void zcm_blocking_t::sendThreadFunc()
 {
+    pthread_setname_np(pthread_self(), "ZeroCM_sender");
     while (true) {
         {
             unique_lock<mutex> lk(sendStateMutex);
@@ -577,6 +578,7 @@ void zcm_blocking_t::sendThreadFunc()
 
 void zcm_blocking_t::recvThreadFunc()
 {
+    pthread_setname_np(pthread_self(), "ZeroCM_receiver");
     while (true) {
         {
             unique_lock<mutex> lk(recvStateMutex);
@@ -617,6 +619,7 @@ void zcm_blocking_t::recvThreadFunc()
 
 void zcm_blocking_t::hndlThreadFunc()
 {
+    pthread_setname_np(pthread_self(), "ZeroCM_handler");
     {
         // Spawn the recv thread
         unique_lock<mutex> lk(recvStateMutex);
